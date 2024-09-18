@@ -1,4 +1,4 @@
-# DetectGas Backend
+# Backend
 
 npm install
 
