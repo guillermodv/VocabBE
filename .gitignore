@@ -1,0 +1,11 @@
+# IDEs and editors
+.idea
+# Dependency directories
+node_modules/
+# System Files
+.DS_Store
+Thumbs.db
+.git
+
+pnpm-lock.yaml
+package-lock.json
