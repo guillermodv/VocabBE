@@ -10,6 +10,7 @@ router.get('/', (req, res) => {
 
 //USER
 router.post('/user', UserController.create)
+router.post('/login', UserController.create)
 router.get('/users', UserController.findAll)
 router.get('/users/:id', UserController.findOne)
 

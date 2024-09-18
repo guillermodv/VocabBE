@@ -13,10 +13,11 @@ async function syncDatabase(db) {
 var app = express()
 var port = process.env.APP_PORT
 
-var corsOptions = {
-  origin: 'http://localhost:8081',
-}
-app.use(cors(corsOptions))
+// var corsOptions = {
+//   origin: 'http://localhost:3000',
+// }
+
+app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use(bodyParser.json())
