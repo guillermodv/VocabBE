@@ -1,39 +1,50 @@
 const db = require('../models')
 const User = db.user
 
-exports.create = (req, res) => {
-  // Validate request
-  console.log('body-->', req.body)
+exports.create = async (req, res) => {
+  console.log('body-->', req.body);
   if (!req.body?.name) {
-    res.status(400).send({
-      message: 'name can not be empty!',
-    })
-    return
+    return res.status(400).send({
+      message: 'The name cannot be empty!',
+    });
   }
 
-  if (!req.body?.description) {
-    res.status(400).send({
-      message: 'description can not be empty!',
-    })
-    return
+  if (!req.body?.email) {
+    return res.status(400).send({
+      message: 'The email cannot be empty!',
+    });
   }
 
-  // Create a User
-  const user = {
-    name: req.body.name,
-    description: req.body.description,
+  if (!req.body?.password) {
+    return res.status(400).send({
+      message: 'The password cannot be empty!',
+    });
   }
 
-  User.create(user)
-    .then((data) => {
-      res.send(data)
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || 'Some error occurred while creating the User.',
-      })
-    })
-}
+  try {
+    // Check if a user with the same email already exists
+    const existingUser = await User.findOne({ where: { email: req.body.email } });
+
+    if (existingUser) {
+      return res.status(400).send({
+        message: 'The email is already registered.',
+      });
+    }
+
+    const user = {
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password,
+    };
+
+    const data = await User.create(user);
+    res.send(data);
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || 'An error occurred while creating the user.',
+    });
+  }
+};
 
 exports.delete = (req, res) => {
   const id = req.params.id
@@ -110,7 +121,7 @@ exports.findOne = (req, res) => {
       } else {
         res.status(404).send({
           message: `Cannot find User with id=${id}.`,
-        })
+        });
       }
     })
     .catch((err) => {
@@ -120,3 +131,43 @@ exports.findOne = (req, res) => {
       })
     })
 }
+
+exports.login = async (req, res) => {
+  if (!req.body?.email || !req.body?.password) {
+    return res.status(400).send({
+      message: 'Email and password are required.',
+    });
+  }
+
+  try {
+    const user = await User.findOne({
+      where: { email: req.body.email },
+    });
+
+    if (!user) {
+      return res.status(404).send({
+        message: 'User not found.',
+      });
+    }
+
+    if (user.password !== req.body.password) {
+      return res.status(401).send({
+        message: 'Incorrect password.',
+      });
+    }
+
+    res.send({
+      message: 'Login successful.',
+      user: {
+        id: user.id,
+        email: user.email,
+        username: user.username,
+      },
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({
+      message: 'Error during login.',
+    });
+  }
+};
