@@ -8,7 +8,7 @@ const User = db.user
 // eslint-disable-next-line no-undef
 const EMAIL_SECRET = process.env.EMAIL_SECRET || 'secret';
 // eslint-disable-next-line no-undef
-const URL_FRONT = process.env.URL_FRONT_RECOVERY || 'http://localhost:3000/reset-password/';
+const URL_FRONT = process.env.URL_FRONT_RECOVERY || 'http://localhost:3000/resetpassword';
 
 const transporter = nodemailer.createTransport({
   service: 'gmail', // o el servicio que estés usando
@@ -210,15 +210,15 @@ exports.requestPasswordReset = (req, res) => {
 
       const token = jwt.sign({ id: user.id }, EMAIL_SECRET, { expiresIn: '1h' });
 
-      const url = `${URL_FRONT}${token}`; // Cambia esto por la URL real
+      const url = `${URL_FRONT}?token=${token}`; // Cambia esto por la URL real
       
 
       //TODO: MAIL DIDNT WORK
-      transporter.sendMail({
-        to: email,
-        subject: 'Password Reset',
-        html: `<p>Click <a href="${url}">here</a> to reset your password.</p>`,
-      });
+      // transporter.sendMail({
+      //   to: email,
+      //   subject: 'Password Reset',
+      //   html: `<p>Click <a href="${url}">here</a> to reset your password.</p>`,
+      // });
 
       console.log("TOKEN ENVIADO", url);
 
