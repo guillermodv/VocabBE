@@ -11,6 +11,7 @@ async function syncDatabase(db) {
 }
 
 var app = express()
+// eslint-disable-next-line no-undef
 var port = process.env.APP_PORT
 
 // var corsOptions = {
