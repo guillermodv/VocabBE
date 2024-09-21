@@ -12,6 +12,8 @@ const URL_FRONT = process.env.URL_FRONT_RECOVERY || 'http://localhost:3000/reset
 
 const transporter = nodemailer.createTransport({
   service: 'gmail', // o el servicio que estés usando
+  host: 'smtp.gmail.com',
+  secure: false, // true for 465, false for other ports
   auth: {
     // eslint-disable-next-line no-undef
     user:  process.env.EMAIL_USER || 'guillermo.dv@gmail.com' ,
@@ -19,7 +21,6 @@ const transporter = nodemailer.createTransport({
     pass:  process.env.EMAIL_PASSWORD || 'Zawadsky28!', 
   },
 });
-
 
 exports.create = async (req, res) => {
   console.log('body-->', req.body);
@@ -219,6 +220,7 @@ exports.requestPasswordReset = (req, res) => {
       //   subject: 'Password Reset',
       //   html: `<p>Click <a href="${url}">here</a> to reset your password.</p>`,
       // });
+
 
       console.log("TOKEN ENVIADO", url);
 
