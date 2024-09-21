@@ -29,7 +29,7 @@ exports.create = async (req, res) => {
       message: 'The name cannot be empty!',
     });
   }
-
+  
   if (!req.body?.email) {
     return res.status(400).send({
       message: 'The email cannot be empty!',
@@ -182,7 +182,7 @@ exports.login = async (req, res) => {
       user: {
         id: user.id,
         email: user.email,
-        username: user.username,
+        name: user.name,
       },
     });
   } catch (err) {
