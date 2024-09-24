@@ -20,43 +20,41 @@ exports.read = (req, res) => {
 }
 
 exports.saveMeasurement = async (req, res) => {
-  const id = req.params.id
-  const measurement = req.params.measurement
+  const { id, measurement } = req.params;
 
-  console.log('core-->', { id, measurement })
+  console.log('core-->', { id, measurement });
 
-  if (!id || !measurement) {
+  // Parameter validation
+  if (!id || isNaN(id) || !measurement) {
     return res.status(400).send({
-      error: 'ID y Measurement are required.',
-    })
+      error: 'ID must be a number and Measurement is required.',
+    });
   }
 
   try {
-    const existingUser = await User.findOne({ where: { userId: id } });
+    const existingUser = await User.findOne({ where: { id: id } });
 
     if (!existingUser) {
       return res.status(400).send({
-        message: 'There is no user with this id.',
+        message: 'No user exists with this ID.',
       });
     }
 
+    // Create new measurement
     const core = {
       userId: id,
       measurement: measurement,
     };
 
     const data = await Core.create(core);
-    res.send(data);
+    return res.send(data); // Single response
   } catch (err) {
     res.status(500).send({
-      message: err.message || 'An error occurred while creating measurement.',
+      message: err.message || 'Error occurred while creating the measurement.',
     });
   }
-
-  res.send({
-    message: `ID ${id} and data ${measurement}.`,
-  })
 }
+
 
 exports.findAll = (req, res) => {
   const id = req.query.id
@@ -71,4 +69,3 @@ exports.findAll = (req, res) => {
       })
     })
 }
-User

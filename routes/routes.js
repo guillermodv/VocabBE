@@ -17,7 +17,7 @@ router.post('/request-password-reset', userController.requestPasswordReset)
 router.post('/reset-password', userController.resetPassword)
 
 //CORE
-router.get('/core/:id/:measurement', coreController.read)
+router.get('/core/:id/:measurement', coreController.saveMeasurement)
 router.get('/cores', coreController.findAll)
 
 router.get('*', (req, res) => {
