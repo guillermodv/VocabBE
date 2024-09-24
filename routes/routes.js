@@ -18,6 +18,7 @@ router.post('/reset-password', userController.resetPassword)
 
 //CORE
 router.get('/core/:id/:measurement', coreController.read)
+router.get('/cores', coreController.findAll)
 
 router.get('*', (req, res) => {
   res.send('path do not exits')
