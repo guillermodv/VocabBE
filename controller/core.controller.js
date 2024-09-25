@@ -69,3 +69,26 @@ exports.findAll = (req, res) => {
       })
     })
 }
+exports.findAllWithMail = async (req, res) => {
+  const id = req.query.id;
+
+  try {
+    const data = await Core.findAll({
+      where: id ? { userId: id } : undefined,
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ['email'],
+          required: false
+        },
+      ],
+    });
+
+    res.send(data);
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || 'Ocurrió un error al recuperar los datos de cores.',
+    });
+  }
+};
