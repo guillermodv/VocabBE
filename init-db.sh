@@ -16,8 +16,8 @@ EOSQL
 
 # Crear la base de datos
 mysql -u root -p"1234" <<-EOSQL
-  CREATE DATABASE IF NOT EXISTS detectgas;
+  CREATE DATABASE IF NOT EXISTS vocab;
   CREATE USER 'usuarioTest'@'%' IDENTIFIED BY '1234';
-  GRANT ALL PRIVILEGES ON detectgas.* TO 'usuarioTest'@'%';
+  GRANT ALL PRIVILEGES ON vocab.* TO 'usuarioTest'@'%';
   FLUSH PRIVILEGES;
 EOSQL
